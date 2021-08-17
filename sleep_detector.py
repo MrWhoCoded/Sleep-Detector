@@ -21,6 +21,8 @@ def midpoint_determiner(p1, p2):
 
 font = cv2.FORMATTER_FMT_C
 
+print("starting Detection...")
+time.sleep(0.5)
 while True:
 
     ret, frame = cap.read()
@@ -67,22 +69,20 @@ while True:
         
         # blink/sleep detection
         if ratio >= 4: #if the ratio gets less than 4, it implies the person is blinking/sleeping
-            cv2.putText(frame, "BLINKING", (50,150), font, 5, (0,225,0))
+            cv2.putText(frame, "BLINKING", (50,150), font, 5, (0,255,0))
             count += 1 #starts the timer(count)
-            if count >=50: 
+            if count >=50:
+                #print("Sleeping")
                 playsound.playsound("foghorn-daniel_simon.mp3") #plays sound to wakeup the person
             else:
                continue
-
-
+        
         #print(blink)
         blink = False
         #print(count)
         count = 0
 
-
-
-    cv2.imshow("GREY", frame)
+    cv2.imshow("sleep detector", frame)
 
     key = cv2.waitKey(1)
 
