@@ -6,3 +6,7 @@ It's made completely on the opencv and dlib libraries in python
 # Contributors
 
 - MrWhocoded
+
+# License and Copyright
+
+Licensed under [MIT License](LICENSE)
