@@ -7,7 +7,7 @@ import playsound
 import sys
 
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("face_landmarks.dat")
 
 cap = cv2.VideoCapture(0)
 
@@ -38,10 +38,11 @@ while True:
 
         landmarks = predictor(grey, face)
 
-        for i in range(0,68):
+        # draws the different landmarks on the face
+        """for i in range(0,68):
             x = landmarks.part(i).x
             y = landmarks.part(i).y
-            #cv2.circle(frame, (x, y), 3, (0,225,0), -1)
+            #cv2.circle(frame, (x, y), 3, (0,225,0), -1)"""
 
         eye1_left_mark = (landmarks.part(36).x, landmarks.part(36).y)
         eye1_right_mark = (landmarks.part(39).x, landmarks.part(39).y)
@@ -63,12 +64,13 @@ while True:
         vert_line_len1 = hypot((eye1_left_mark[0] - eye1_right_mark[0]), (eye2_left_mark[1] - eye2_right_mark[1]))
 
         ratio = int(vert_line_len1/hor_line_len1)
-
-        if ratio >= 4:
-            cv2.putText(frame, "BLINKING", (50,150), font, 5, (225,0,0))
-            count += 1
-            if count >=50:
-                playsound.playsound("foghorn-daniel_simon.mp3")
+        
+        # blink/sleep detection
+        if ratio >= 4: #if the ratio gets less than 4, it implies the person is blinking/sleeping
+            cv2.putText(frame, "BLINKING", (50,150), font, 5, (0,225,0))
+            count += 1 #starts the timer(count)
+            if count >=50: 
+                playsound.playsound("foghorn-daniel_simon.mp3") #plays sound to wakeup the person
             else:
                continue
 
